@@ -69,7 +69,7 @@ RUN set -ex \
     && ldconfig
 
 # Install PennMUSH.
-ARG pennmush_version="187p0"
+ARG pennmush_version="188p0"
 RUN set -ex \
     && adduser --disabled-password --gecos '' mush \
     && mkdir -p /mush && chown mush.mush /mush \

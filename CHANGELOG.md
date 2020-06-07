@@ -20,6 +20,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Security
 
 
+## [188p0] - 2020-06-06
+
+### Added
+
+* [PennMUSH 1.8.8 patchlevel 0](https://github.com/pennmush/pennmush/blob/master/CHANGES.188.md#version-188-patchlevel-0-apr-20-2020)
+
+
 ## [187p0] - 2019-02-20
 
 ### Added
