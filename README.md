@@ -25,7 +25,7 @@ This will always pull the image tagged as `latest`. If you would like to pull
 an image with a specific tag, specify the tag when pulling:
 
 ```bash
-docker pull benramsey/pennmush:187p0
+docker pull benramsey/pennmush:188p0
 ```
 
 
@@ -41,7 +41,7 @@ For example:
 docker run -d \
     -p 4201:4201 \
     -v "/path/to/host/game/dir:/mush/game" \
-    benramsey/pennmush:187p0
+    benramsey/pennmush:188p0
 ```
 
 The first time you run the image, the container will create database and
