@@ -196,7 +196,7 @@ more information.
 [badge-source]: http://img.shields.io/badge/source-benramsey/pennmush-blue.svg?style=flat-square
 [badge-release]: https://img.shields.io/github/release/ramsey/docker-pennmush.svg?style=flat-square
 [badge-license]: https://img.shields.io/github/license/ramsey/docker-pennmush.svg?style=flat-square
-[badge-build]: https://img.shields.io/docker/build/benramsey/pennmush.svg?style=flat-square
+[badge-build]: https://img.shields.io/docker/cloud/automated/benramsey/pennmush.svg?style=flat-square
 [badge-downloads]: https://img.shields.io/docker/pulls/benramsey/pennmush.svg?style=flat-square&colorB=mediumvioletred
 
 [source]: https://github.com/ramsey/docker-pennmush
