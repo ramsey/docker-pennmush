@@ -48,7 +48,7 @@ RUN set -ex \
         zlib1g-dev
 
 # Build a custom version of cURL.
-ARG curl_version="7.64.0"
+ARG curl_version="7.71.1"
 RUN set -ex \
     && curl -L -o /tmp/curl-${curl_version}.tar.gz https://curl.haxx.se/download/curl-${curl_version}.tar.gz \
     && apt-get remove -y curl \
