@@ -74,7 +74,6 @@ RUN set -ex \
     && adduser --disabled-password --gecos '' mush \
     && mkdir -p /mush && chown mush.mush /mush \
     && su -c 'git clone https://github.com/pennmush/pennmush.git /mush' mush \
-    && su -c 'cd /mush && git checkout ${pennmush_version}' mush \
     && su -c 'cd /mush \
         && \
         CFLAGS=-Wno-pragmas \
