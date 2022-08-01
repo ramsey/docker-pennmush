@@ -1,0 +1,54 @@
+From e36aaec0e2376b210ea6c529e84679fb48693ada Mon Sep 17 00:00:00 2001
+From: Ben Ramsey <ben@benramsey.com>
+Date: Sun, 31 Jul 2022 20:07:26 -0500
+Subject: [PATCH] Remove the check for running as root
+
+---
+ src/bsd.c | 31 -------------------------------
+ 1 file changed, 31 deletions(-)
+
+diff --git a/src/bsd.c b/src/bsd.c
+index 8797dbf6..8fe67f55 100644
+--- a/src/bsd.c
++++ b/src/bsd.c
+@@ -507,37 +507,6 @@ main(int argc, char **argv)
+   bool detach_session __attribute__((__unused__)) = 1;
+   bool enable_tests = 0, only_test = 0;
+ 
+-/* disallow running as root on unix.
+- * This is done as early as possible, before translation is initialized.
+- * Hence, no T()s around messages.
+- */
+-#ifndef WIN32
+-#ifdef HAVE_GETUID
+-  if (getuid() == 0) {
+-    fputs("Please run the server as another user.\n", stderr);
+-    fputs("PennMUSH will not run as root as a security measure. Exiting.\n",
+-          stderr);
+-    return EXIT_FAILURE;
+-  }
+-/* Add suid-root checks here. */
+-#endif
+-#ifdef HAVE_GETEUID
+-  if (geteuid() == 0) {
+-    fprintf(stderr, "The  %s binary is set suid and owned by root.\n", argv[0]);
+-#ifdef HAVE_SETEUID
+-    fprintf(stderr, "Changing effective user to %d.\n", (int) getuid());
+-    if (seteuid(getuid()) < 0) {
+-      fprintf(stderr, "ERROR: seteuid() failed: %s\n", strerror(errno));
+-      fputs("PennMUSH will not run as root as a security measure. Exiting.\n",
+-            stderr);
+-      return EXIT_FAILURE;
+-    } else
+-      in_suid_root_mode = 1;
+-#endif
+-  }
+-#endif /* HAVE_GETEUID */
+-#endif /* !WIN32 */
+-
+ #ifdef HAVE_PLEDGE
+   if (pledge(
+         "stdio rpath wpath cpath inet flock unix dns proc exec id prot_exec",
+-- 
+2.36.1
+

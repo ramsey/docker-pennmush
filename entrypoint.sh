@@ -45,11 +45,11 @@ if [ -z "$1" ]; then
     fi
 
     if [ ! -f "$gamedir/mush.cnf" ]; then
-        su -c "cp -a /mush/game.original/. $gamedir/" mush
-        su -c "sed -i '/^error_log/c\#error_log log\/netmush\.log' $gamedir/mush.cnf" mush
+        cp -a /mush/game.original/. $gamedir/
+        sed -i "/^error_log/c\#error_log log\/netmush\.log" $gamedir/mush.cnf
     fi
 
-    su -c "$gamedir/restart" mush
+    $gamedir/restart
     sleep $SLEEP
 
     echo

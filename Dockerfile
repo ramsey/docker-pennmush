@@ -1,5 +1,5 @@
-ARG debian_tag="9.6-slim"
-FROM debian:${debian_tag}
+ARG ubuntu_tag="22.04"
+FROM ubuntu:${ubuntu_tag}
 
 ENV GAME_DIR="/mush/game"
 
@@ -28,8 +28,9 @@ RUN set -ex \
         libicu-dev \
         libidn2-0-dev \
         libldap2-dev \
-        libmariadbclient-dev \
-        libmariadbclient-dev-compat \
+        libmariadb-dev \
+        libmariadb-dev-compat \
+        libmariadb3 \
         libnghttp2-dev \
         libpcre3-dev \
         libpq-dev \
@@ -48,7 +49,7 @@ RUN set -ex \
         zlib1g-dev
 
 # Build a custom version of cURL.
-ARG curl_version="7.71.1"
+ARG curl_version="7.84.0"
 RUN set -ex \
     && curl -L -o /tmp/curl-${curl_version}.tar.gz https://curl.haxx.se/download/curl-${curl_version}.tar.gz \
     && apt-get remove -y curl \
@@ -69,24 +70,30 @@ RUN set -ex \
     && ldconfig
 
 # Install PennMUSH.
+COPY patches/*.patch /usr/local/src/
 ARG pennmush_version="188p0"
 RUN set -ex \
-    && adduser --disabled-password --gecos '' mush \
-    && mkdir -p /mush && chown mush.mush /mush \
-    && su -c 'git clone https://github.com/pennmush/pennmush.git /mush' mush \
-    && su -c 'cd /mush && git checkout ${pennmush_version}' mush \
-    && su -c 'cd /mush \
-        && \
-        CFLAGS=-Wno-pragmas \
+    && git config --global user.email "root@localhost" \
+    && git config --global user.name "root" \
+    && mkdir -p /mush \
+    && git clone https://github.com/pennmush/pennmush.git /mush \
+    && cd /mush \
+    && git checkout ${pennmush_version} \
+    && git cherry-pick \
+        --strategy ort \
+        -X theirs \
+        2fcd5733e3ac9e3361aba53a6a03a8204684d025 \
+        ed8322a93d5e16532a703cba653db66b7c3f5183 \
+    && git apply /usr/local/src/0001-remove-root-check.patch \
+    && CFLAGS=-Wno-pragmas \
         SENDMAIL=/usr/sbin/sendmail \
         ./configure \
             --enable-ssl_slave \
             --enable-nls \
-            --with-pcre' mush \
-    && su -c 'cd /mush \
-        && make update all install \
-        && make portmsg' mush \
-    && su -c 'mv /mush/game /mush/game.original' mush
+    && make update \
+    && make install \
+    && make portmsg \
+    && mv /mush/game /mush/game.original
 
 WORKDIR /mush
 
